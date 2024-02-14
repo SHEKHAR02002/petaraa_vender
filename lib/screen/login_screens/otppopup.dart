@@ -1,28 +1,40 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:petaraa_vender/api/authapi.dart';
 import 'package:petaraa_vender/constant/variableconstat.dart';
 import 'package:petaraa_vender/screen/login_screens/addnewuser.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpPopUp extends ConsumerStatefulWidget {
-  const OtpPopUp({super.key});
+  final String phoneno;
+  const OtpPopUp({super.key, required this.phoneno});
 
   @override
   ConsumerState<OtpPopUp> createState() => _OtpPopUpState();
 }
 
 class _OtpPopUpState extends ConsumerState<OtpPopUp> {
-  TextEditingController smsCode = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
+  verifyotpbtnfunction() {
+    Map<String, String> requestBody = {
+      'phoneNo': widget.phoneno,
+      'otpCode': ref.watch(optProvider).text
+    };
+    Auth().verifyotp(requestBody: requestBody).then((value) => value
+        ? Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => AddNewUser(
+                      phoneno: widget.phoneno,
+                    )),
+            (route) => false)
+        : log('Invalid OTP'));
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    smsCode.text = ref.watch(optProvider);
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
@@ -40,7 +52,9 @@ class _OtpPopUpState extends ConsumerState<OtpPopUp> {
               padding: const EdgeInsets.only(top: 30, bottom: 20),
               child: Pinput(
                 length: 4,
-                controller: smsCode,
+                controller: ref.watch(optProvider),
+                onChanged: (value) =>
+                    ref.watch(optProvider.notifier).state.text = value,
               ),
             ),
             Padding(
@@ -54,12 +68,7 @@ class _OtpPopUpState extends ConsumerState<OtpPopUp> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => const AddNewUser()),
-                      (route) => false);
-                },
+                onPressed: verifyotpbtnfunction,
                 child: const Text(
                   'VERIFY',
                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),

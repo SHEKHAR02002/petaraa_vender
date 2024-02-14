@@ -1,17 +1,20 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:petaraa_vender/api/authapi.dart';
 import 'package:petaraa_vender/constant/color.dart';
 import 'package:petaraa_vender/provider/imagecropper.dart';
 import 'package:petaraa_vender/screen/navbar.dart';
 import 'package:petaraa_vender/widget/miscellaneous/decoration.dart';
 
 class AddNewUser extends ConsumerStatefulWidget {
-  const AddNewUser({super.key});
+  final String phoneno;
+  const AddNewUser({super.key, required this.phoneno});
 
   @override
   ConsumerState<AddNewUser> createState() => _AddNewUserState();
@@ -19,15 +22,15 @@ class AddNewUser extends ConsumerStatefulWidget {
 
 class _AddNewUserState extends ConsumerState<AddNewUser> {
   final TextEditingController _userName = TextEditingController(),
-      _gstNo = TextEditingController(),
-      _email = TextEditingController(),
-      _shopAddress = TextEditingController(),
-      _shopName = TextEditingController();
+      _email = TextEditingController();
+
   final GlobalKey<FormState> _emailInputBoxKey = GlobalKey<FormState>();
 
   //take image function
+  DateTime dateofbirth =
+      DateTime.now().subtract(const Duration(days: 18 * 365));
 
-  String customProfileImage = "";
+  String customProfileImage = '';
   Future<dynamic> takeImages({required source}) async {
     try {
       final XFile? image = await ImagePicker().pickImage(source: source);
@@ -40,6 +43,50 @@ class _AddNewUserState extends ConsumerState<AddNewUser> {
         print(e.toString());
       }
     }
+  }
+
+  //date picker
+  pickdate() async {
+    var tempdateofbirth = await showDatePicker(
+      context: context,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+                primary: primaryColor,
+                onPrimary: Colors.white,
+                onSurface: primaryColor),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                  foregroundColor: primaryColor // button text color
+                  ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (tempdateofbirth != null) {
+      setState(() {
+        dateofbirth = tempdateofbirth;
+      });
+    }
+  }
+
+  //
+  adduserbtnfuncation() async {
+    FormData requestdata = FormData.fromMap({
+      'venderName': _userName.text,
+      'emailId': _email.text,
+      'dob': dateofbirth,
+      'phoneNo': widget.phoneno,
+      'profileImage': await MultipartFile.fromFile(customProfileImage,
+          filename: 'profilepic')
+    });
+    Auth().createprofile(requestdata: requestdata);
   }
 
   @override
@@ -165,7 +212,7 @@ class _AddNewUserState extends ConsumerState<AddNewUser> {
                   ),
                 ),
                 Text(
-                  "GSTIN No.",
+                  "Phone no.",
                   style: text18_400,
                 ),
                 Padding(
@@ -174,12 +221,10 @@ class _AddNewUserState extends ConsumerState<AddNewUser> {
                     height: 50,
                     decoration: shadowdecoration,
                     child: TextField(
-                      maxLength: 15,
-                      textCapitalization: TextCapitalization.characters,
-                      style: text20_400,
-                      controller: _gstNo,
+                      readOnly: true,
                       decoration: InputDecoration(
-                        counterText: "",
+                        label: Text(widget.phoneno),
+                        labelStyle: text20_400,
                         contentPadding: const EdgeInsets.all(15),
                         filled: true,
                         fillColor: Colors.white,
@@ -191,50 +236,23 @@ class _AddNewUserState extends ConsumerState<AddNewUser> {
                   ),
                 ),
                 Text(
-                  "Shop Name",
+                  "Date Of Birth",
                   style: text18_400,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5, bottom: 20),
-                  child: Container(
-                    height: 50,
-                    decoration: shadowdecoration,
-                    child: TextField(
-                      textCapitalization: TextCapitalization.words,
-                      controller: _shopName,
-                      style: text20_400,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  "Shop Address",
-                  style: text18_400,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5, bottom: 20),
-                  child: Container(
-                    decoration: shadowdecoration,
-                    child: TextField(
-                      style: text20_400,
-                      controller: _shopAddress,
-                      maxLines: 2,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(15),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
+                  child: GestureDetector(
+                    onTap: pickdate,
+                    child: Container(
+                        height: 50,
+                        decoration: shadowdecoration,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text(
+                            "Date Of Birth",
+                            style: text20_400,
+                          ),
+                        )),
                   ),
                 ),
               ],

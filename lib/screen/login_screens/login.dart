@@ -18,11 +18,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   loginbtnfunction() {
     if (_phoneNo.text.isNotEmpty) {
-      Auth().login(phoneNo: _phoneNo.text, ref: ref).then((value) {
+      Map<String, String> requestBody = {
+        'phoneNo': _phoneNo.text,
+      };
+      Auth().login(requestBody: requestBody, ref: ref).then((value) {
         showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (context) => const OtpPopUp());
+            builder: (context) => OtpPopUp(
+                  phoneno: _phoneNo.text,
+                ));
       });
     } else {}
   }
@@ -104,13 +109,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
                 child: ElevatedButton(
-                    onPressed: () {
-                      loginbtnfunction();
-                      // showDialog(
-                      //     barrierDismissible: false,
-                      //     context: context,
-                      //     builder: (context) => const OtpPopUp());
-                    },
+                    onPressed: loginbtnfunction,
                     style: ElevatedButton.styleFrom(
                         elevation: 0,
                         shape: RoundedRectangleBorder(
