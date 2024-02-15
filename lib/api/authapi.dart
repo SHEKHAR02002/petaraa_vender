@@ -43,6 +43,7 @@ class Auth {
       Map data = response.data;
       if (response.statusCode == 200) {
         //sucess toast
+        log(data['message']);
         return data['success'];
       } else {
         return false;
@@ -61,6 +62,7 @@ class Auth {
       Map data = response.data;
       if (response.statusCode == 200) {
         //sucess toast
+        log(data['message']);
         return true;
       } else {
         //error toast

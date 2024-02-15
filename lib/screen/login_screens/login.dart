@@ -36,96 +36,93 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    "petaraa",
-                    style: TextStyle(
-                        color: primary4Color,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Autour"),
-                  ),
-                  Text(
-                    "SHOP",
-                    style: TextStyle(
-                        color: primary4Color,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Autour"),
-                  ),
-                ],
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                child: SvgPicture.asset(
-                  "assets/images/login.svg",
-                  // height: height / 2.2,
-                  width: width,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "petaraa",
+                  style: TextStyle(
+                      color: primary4Color,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Autour"),
                 ),
-              ),
-              const Text(
-                'Enter your mobile number to continue',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
+                Text(
+                  "SHOP",
+                  style: TextStyle(
+                      color: primary4Color,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Autour"),
                 ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              child: SvgPicture.asset(
+                "assets/images/login.svg",
+                // height: height / 2.2,
+                width: width,
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 0, top: 30, left: 15, right: 15),
-                child: IntlPhoneField(
-                  dropdownTextStyle: const TextStyle(fontSize: 14),
-                  style: const TextStyle(fontSize: 14),
-                  initialCountryCode: "IN",
-                  showDropdownIcon: false,
-                  showCountryFlag: false,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderSide: const BorderSide(),
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
-                  controller: _phoneNo,
-                  onChanged: (value) {
-                    if (_phoneNo.text.length == 10) {
-                      FocusScopeNode currentFocus = FocusScope.of(context);
+            ),
+            const Text(
+              'Enter your mobile number to continue',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  bottom: 0, top: 30, left: 15, right: 15),
+              child: IntlPhoneField(
+                dropdownTextStyle: const TextStyle(fontSize: 14),
+                style: const TextStyle(fontSize: 14),
+                initialCountryCode: "IN",
+                showDropdownIcon: false,
+                showCountryFlag: false,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderSide: const BorderSide(),
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                controller: _phoneNo,
+                onChanged: (value) {
+                  if (_phoneNo.text.length == 10) {
+                    FocusScopeNode currentFocus = FocusScope.of(context);
 
-                      if (!currentFocus.hasPrimaryFocus) {
-                        currentFocus.unfocus();
-                      }
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
                     }
-                  },
-                  onCountryChanged: (country) {},
-                ),
+                  }
+                },
+                onCountryChanged: (country) {},
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
-                child: ElevatedButton(
-                    onPressed: loginbtnfunction,
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        backgroundColor: primaryColor,
-                        minimumSize: Size(width, 50)),
-                    child: const Text(
-                      "LOGIN",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white),
-                    )),
-              )
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+              child: ElevatedButton(
+                  onPressed: loginbtnfunction,
+                  style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      backgroundColor: primaryColor,
+                      minimumSize: Size(width, 50)),
+                  child: const Text(
+                    "LOGIN",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white),
+                  )),
+            )
+          ],
         ),
       ),
     );
