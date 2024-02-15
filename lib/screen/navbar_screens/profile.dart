@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:petaraa_vender/constant/color.dart';
+import 'package:petaraa_vender/constant/variableconstat.dart';
 import 'package:petaraa_vender/widget/miscellaneous/editshopdetails.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -11,6 +12,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.of(context).size.width;
+    final userdata = ref.watch(userdetailsProvider);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -173,7 +175,7 @@ class ProfileScreen extends ConsumerWidget {
                         width: 10,
                       ),
                       Text(
-                        "Shreeman",
+                        userdata.data!.venderName.toString(),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -199,7 +201,7 @@ class ProfileScreen extends ConsumerWidget {
                         width: 10,
                       ),
                       Text(
-                        "9520000000",
+                        userdata.data!.phoneNo.toString(),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -225,7 +227,7 @@ class ProfileScreen extends ConsumerWidget {
                         width: 10,
                       ),
                       Text(
-                        "shreeman143@gmail.com",
+                        userdata.data!.emailId.toString(),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

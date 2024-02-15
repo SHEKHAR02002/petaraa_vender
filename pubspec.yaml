@@ -46,6 +46,8 @@ dependencies:
   flutter_switch: ^0.3.2
   dropdown_button2: ^2.3.9
   dio: ^5.4.0
+  shared_preferences: ^2.2.2
+  page_transition: ^2.1.0
 
 dev_dependencies:
   flutter_test:

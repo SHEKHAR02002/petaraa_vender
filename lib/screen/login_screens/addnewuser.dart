@@ -87,8 +87,8 @@ class _AddNewUserState extends ConsumerState<AddNewUser> {
             ref.watch(customProfileImageProvider).toString(),
             filename: 'profilepic')
       });
-      Auth().createprofile(requestdata: requestdata).whenComplete(() =>
-          Navigator.of(context).pushAndRemoveUntil(
+      Auth().createprofile(requestdata: requestdata, ref: ref).whenComplete(
+          () => Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => const NavigationBarScreen()),
               (route) => false));
