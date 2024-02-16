@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:petaraa_vender/api/authapi.dart';
 import 'package:petaraa_vender/constant/color.dart';
 import 'package:petaraa_vender/screen/navbar_screens/home.dart';
 import 'package:petaraa_vender/screen/navbar_screens/manegment.dart';
@@ -28,6 +29,7 @@ class _NavigationBarScreenState extends ConsumerState<NavigationBarScreen> {
   @override
   Widget build(BuildContext context) {
     final currentPageIndex = ref.watch(currentPageProvider);
+    Auth().getuserdetails(ref: ref);
     return Scaffold(
       body: screens[currentPageIndex],
       bottomNavigationBar: NavigationBar(

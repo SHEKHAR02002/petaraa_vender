@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +8,7 @@ import 'package:petaraa_vender/constant/color.dart';
 import 'package:petaraa_vender/constant/variableconstat.dart';
 import 'package:petaraa_vender/screen/login_screens/addnewuser.dart';
 import 'package:petaraa_vender/screen/navbar.dart';
+import 'package:petaraa_vender/widget/miscellaneous/toastui.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpPopUp extends ConsumerStatefulWidget {
@@ -25,14 +25,16 @@ class _OtpPopUpState extends ConsumerState<OtpPopUp> {
       'phoneNo': widget.phoneno,
       'otpCode': ref.watch(optProvider).text
     };
-    Auth().verifyotp(requestBody: requestBody, ref: ref).then((value) {
+    Auth()
+        .verifyotp(requestBody: requestBody, ref: ref, context: context)
+        .then((value) {
       if (value) {
         if (ref.watch(useretypeProvider)) {
           Auth().getuserdetails(ref: ref).whenComplete(() {
             Navigator.pushAndRemoveUntil(
                 context,
                 PageTransition(
-                    duration: const Duration(seconds: 1),
+                    duration: const Duration(milliseconds: 500),
                     type: PageTransitionType.fade,
                     child: const NavigationBarScreen()),
                 (route) => false);
@@ -41,7 +43,7 @@ class _OtpPopUpState extends ConsumerState<OtpPopUp> {
           Navigator.pushAndRemoveUntil(
               context,
               PageTransition(
-                  duration: const Duration(seconds: 1),
+                  duration: const Duration(milliseconds: 500),
                   type: PageTransitionType.rightToLeft,
                   child: AddNewUser(
                     phoneno: widget.phoneno,
@@ -49,7 +51,7 @@ class _OtpPopUpState extends ConsumerState<OtpPopUp> {
               (route) => false);
         }
       } else {
-        log('Invalid OTP');
+        toast(msg: 'Invalid OTP', context: context);
       }
     });
   }
@@ -65,28 +67,24 @@ class _OtpPopUpState extends ConsumerState<OtpPopUp> {
           padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    "petaraa",
-                    style: TextStyle(
-                        color: primary4Color,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Autour"),
-                  ),
-                  Text(
-                    "SHOP",
-                    style: TextStyle(
-                        color: primary4Color,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Autour"),
-                  ),
-                ],
-              ),
+              const SizedBox(height: 30),
+              RichText(
+                  text: TextSpan(
+                      text: 'petaraa',
+                      style: TextStyle(
+                          color: primary4Color,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "Autour"),
+                      children: <TextSpan>[
+                    TextSpan(
+                        text: 'SHOP',
+                        style: TextStyle(
+                            color: primary4Color,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Autour"))
+                  ])),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 50, vertical: 5),

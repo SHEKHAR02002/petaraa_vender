@@ -8,7 +8,7 @@ import 'package:petaraa_vender/widget/miscellaneous/editshopdetails.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
-
+      
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.of(context).size.width;

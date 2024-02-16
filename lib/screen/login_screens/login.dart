@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:petaraa_vender/api/authapi.dart';
 import 'package:petaraa_vender/constant/color.dart';
 import 'package:petaraa_vender/screen/login_screens/otppopup.dart';
+import 'package:petaraa_vender/widget/miscellaneous/toastui.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -24,17 +24,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         'phoneNo': _phoneNo.text,
       };
       Auth()
-          .login(requestBody: requestBody, ref: ref)
+          .login(requestBody: requestBody, ref: ref, context: context)
           .whenComplete(() => Navigator.push(
               context,
               PageTransition(
-                  duration: const Duration(seconds: 1),
+                  duration: const Duration(milliseconds: 500),
                   type: PageTransitionType.rightToLeft,
                   child: OtpPopUp(
                     phoneno: _phoneNo.text,
                   ))));
     } else {
-      log('Enter Phone Number');
+      toast(msg: "Enter Phone Number", context: context);
     }
   }
 
@@ -45,31 +45,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         body: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    "petaraa",
-                    style: TextStyle(
-                        color: primary4Color,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Autour"),
-                  ),
-                  Text(
-                    "SHOP",
-                    style: TextStyle(
-                        color: primary4Color,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Autour"),
-                  ),
-                ],
-              ),
+              const SizedBox(height: 30),
+              RichText(
+                  text: TextSpan(
+                      text: 'petaraa',
+                      style: TextStyle(
+                          color: primary4Color,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "Autour"),
+                      children: <TextSpan>[
+                    TextSpan(
+                        text: 'SHOP',
+                        style: TextStyle(
+                            color: primary4Color,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Autour"))
+                  ])),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 50, vertical: 10),

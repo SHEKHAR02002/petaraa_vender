@@ -9,6 +9,6 @@ StateProvider<TextEditingController> optProvider =
     StateProvider((ref) => TextEditingController());
 
 StateProvider<bool> useretypeProvider = StateProvider((ref) => false);
-StateProvider tokenProvider = StateProvider((ref) => '');
+
 StateProvider<UserDetails> userdetailsProvider =
     StateProvider((ref) => UserDetails());
