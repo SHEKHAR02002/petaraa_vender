@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:petaraa_vender/api/authapi.dart';
 import 'package:petaraa_vender/constant/color.dart';
+import 'package:petaraa_vender/constant/variableconstat.dart';
 import 'package:petaraa_vender/screen/navbar_screens/home.dart';
 import 'package:petaraa_vender/screen/navbar_screens/manegment.dart';
 import 'package:petaraa_vender/screen/navbar_screens/product.dart';
 import 'package:petaraa_vender/screen/navbar_screens/profile.dart';
+import 'package:petaraa_vender/widget/miscellaneous/toastui.dart';
 
 class NavigationBarScreen extends ConsumerStatefulWidget {
   const NavigationBarScreen({super.key});
@@ -29,7 +30,10 @@ class _NavigationBarScreenState extends ConsumerState<NavigationBarScreen> {
   @override
   Widget build(BuildContext context) {
     final currentPageIndex = ref.watch(currentPageProvider);
-    Auth().getuserdetails(ref: ref);
+    final userdata = ref.watch(userdetailsProvider);
+    if (userdata.data!.showShopDetails.toString() == "false") {
+      toast(msg: 'Add Shop Details', context: context);
+    }
     return Scaffold(
       body: screens[currentPageIndex],
       bottomNavigationBar: NavigationBar(

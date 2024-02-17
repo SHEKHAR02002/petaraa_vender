@@ -1,11 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:petaraa_vender/constant/color.dart';
+import 'package:petaraa_vender/constant/variableconstat.dart';
 import 'package:petaraa_vender/widget/cards/displaycard_home.dart';
 import 'package:petaraa_vender/widget/cards/reviewcard_home.dart';
-
-
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +18,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final userdetails = ref.watch(userdetailsProvider);
+    log(userdetails.data!.showShopDetails.toString());
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -85,7 +88,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "TEST",
+                          userdetails.data!.showShopDetails.toString() == 'true'
+                              ? userdetails.data!.shopData!.shopName.toString()
+                              : "Petaraa",
                           style: TextStyle(
                               fontSize: 18,
                               color: primaryColor,
@@ -93,7 +98,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               fontFamily: "Autour"),
                         ),
                         Text(
-                          "test@gmail.com",
+                          userdetails.data!.emailId!,
                           style: TextStyle(
                               color: primaryColor,
                               fontSize: 12,

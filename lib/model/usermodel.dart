@@ -18,10 +18,11 @@ class UserData {
   int? status;
   String? dob;
   String? emailId;
+  String? shopId;
+  bool? showShopDetails;
   String? venderName;
   String? profileImage;
-  // ShopDetails? shopDetails;
-  bool? showShopDetails;
+  ShopData? shopData;
 
   UserData(
       {this.sId,
@@ -29,10 +30,11 @@ class UserData {
       this.status,
       this.dob,
       this.emailId,
+      this.shopId,
+      this.showShopDetails,
       this.venderName,
       this.profileImage,
-      // this.shopDetails,
-      this.showShopDetails});
+      this.shopData});
 
   UserData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -40,18 +42,74 @@ class UserData {
     status = json['status'];
     dob = json['dob'];
     emailId = json['emailId'];
+    shopId = json['shopId'];
+    showShopDetails = json['showShopDetails'];
     venderName = json['venderName'];
     profileImage = json['profileImage'];
-    // shopDetails = json['shopDetails'] != null ? ShopDetails.fromJson(json['shopDetails']) : null;
-    showShopDetails = json['showShopDetails'];
+    shopData =
+        json['shopData'] != null ? ShopData.fromJson(json['shopData']) : null;
   }
 }
 
-// class ShopDetails {
+class ShopData {
+  String? sId;
+  String? shopName;
+  String? shopAddress;
+  String? contactDetails;
+  String? aboutUs;
+  String? websiteLink;
+  int? status;
+  String? createdOn;
+  String? modifiedOn;
+  String? venderId;
+  // List<Null>? externalShopImages;
+  // List<Null>? extraImages;
+  // List<Null>? internalShopImages;
 
+  ShopData({
+    this.sId,
+    this.shopName,
+    this.shopAddress,
+    this.contactDetails,
+    this.aboutUs,
+    this.websiteLink,
+    this.status,
+    this.createdOn,
+    this.modifiedOn,
+    this.venderId,
+    // this.externalShopImages,
+    // this.extraImages,
+    // this.internalShopImages
+  });
 
-// 	ShopDetails({});
-
-// 	ShopDetails.fromJson(Map<String, dynamic> json);
-
-// }
+  ShopData.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    shopName = json['shopName'];
+    shopAddress = json['shopAddress'];
+    contactDetails = json['contactDetails'];
+    aboutUs = json['aboutUs'];
+    websiteLink = json['websiteLink'];
+    status = json['status'];
+    createdOn = json['created_on'];
+    modifiedOn = json['modified_on'];
+    venderId = json['venderId'];
+    // if (json['externalShopImages'] != null) {
+    //   externalShopImages = <Null>[];
+    //   json['externalShopImages'].forEach((v) {
+    //     externalShopImages!.add(new Null.fromJson(v));
+    //   });
+    // }
+    // if (json['extraImages'] != null) {
+    //   extraImages = <Null>[];
+    //   json['extraImages'].forEach((v) {
+    //     extraImages!.add(new Null.fromJson(v));
+    //   });
+    // }
+    // if (json['internalShopImages'] != null) {
+    //   internalShopImages = <Null>[];
+    //   json['internalShopImages'].forEach((v) {
+    //     internalShopImages!.add(new Null.fromJson(v));
+    //   });
+    // }
+  }
+}

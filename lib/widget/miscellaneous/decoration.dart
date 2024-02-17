@@ -15,22 +15,14 @@ BoxDecoration shadowdecoration = BoxDecoration(
 );
 
 TextStyle text14_400 = const TextStyle(
-  fontSize: 14,
-  fontWeight: FontWeight.w400,
-);
+    fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.5);
 
 TextStyle text16_400 = const TextStyle(
-  fontSize: 16,
-  fontWeight: FontWeight.w400,
-);
+    fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5);
 TextStyle text18_400 = const TextStyle(
-  fontSize: 18,
-  fontWeight: FontWeight.w400,
-);
+    fontSize: 18, fontWeight: FontWeight.w400, letterSpacing: 0.5);
 TextStyle text20_400 = const TextStyle(
-  fontSize: 18,
-  fontWeight: FontWeight.w400,
-);
+    fontSize: 18, fontWeight: FontWeight.w400, letterSpacing: 0.5);
 
 InputDecoration textfielddecoration = const InputDecoration(
     enabledBorder: OutlineInputBorder(

@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:petaraa_vender/constant/color.dart';
 import 'package:petaraa_vender/constant/variableconstat.dart';
-import 'package:petaraa_vender/widget/miscellaneous/editshopdetails.dart';
+import 'package:petaraa_vender/screen/manegement_sub_screens/editshopdetails.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
-      
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.of(context).size.width;
@@ -133,7 +133,11 @@ class ProfileScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               children: [
-                const CircleAvatar(radius: 50),
+                CircleAvatar(
+                  radius: 50,
+                  foregroundImage: NetworkImage(
+                      '$photobaseurl/${userdata.data!.profileImage}'),
+                ),
                 const SizedBox(
                   height: 40,
                 ),
@@ -146,17 +150,21 @@ class ProfileScreen extends ConsumerWidget {
                         minimumSize: Size(width, 50)),
                     onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const EditShopDetails())),
-                    child: const Row(
+                        PageTransition(
+                            duration: const Duration(milliseconds: 500),
+                            type: PageTransitionType.rightToLeft,
+                            child: const EditShopDetails())),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Edit shop Details',
-                          style: TextStyle(
+                          userdata.data!.showShopDetails.toString() == 'true'
+                              ? 'Edit shop Details'
+                              : 'Add shop Details',
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w400),
                         ),
-                        Icon(Icons.arrow_forward_ios)
+                        const Icon(Icons.arrow_forward_ios)
                       ],
                     )),
                 const SizedBox(
@@ -244,34 +252,16 @@ class ProfileScreen extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Row(
                     children: [
-                      SvgPicture.asset("assets/icons/aadhar.svg"),
+                      Icon(
+                        Icons.calendar_month_outlined,
+                        color: primary4Color,
+                        size: 24,
+                      ),
                       const SizedBox(
                         width: 10,
                       ),
                       Text(
-                        "1234 4213 3212 2301",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: grey),
-                      )
-                    ],
-                  ),
-                ),
-                Divider(
-                  color: grey,
-                  height: 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset("assets/icons/pan.svg"),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'BDSK54216',
+                        userdata.data!.dob.toString(),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
