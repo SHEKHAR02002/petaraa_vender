@@ -5,6 +5,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:petaraa_vender/constant/color.dart';
 import 'package:petaraa_vender/constant/variableconstat.dart';
 import 'package:petaraa_vender/screen/manegement_sub_screens/editshopdetails.dart';
+import 'package:petaraa_vender/screen/manegement_sub_screens/updateshopdetail.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -153,7 +154,10 @@ class ProfileScreen extends ConsumerWidget {
                         PageTransition(
                             duration: const Duration(milliseconds: 500),
                             type: PageTransitionType.rightToLeft,
-                            child: const EditShopDetails())),
+                            child: userdata.data!.showShopDetails.toString() ==
+                                    'true'
+                                ? const UpdateShopDetail()
+                                : const EditShopDetails())),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
