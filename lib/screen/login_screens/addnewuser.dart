@@ -97,10 +97,13 @@ class _AddNewUserState extends ConsumerState<AddNewUser> {
           .createprofile(requestdata: requestdata, ref: ref, context: context)
           .then((value) {
         if (value) {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (context) => const NavigationBarScreen()),
-              (route) => false);
+          if (value) {
+            Auth().getuserdetails(ref: ref, context: context).whenComplete(() =>
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (context) => const NavigationBarScreen()),
+                    (route) => false));
+          }
         }
       });
     } else {

@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:petaraa_vender/api/shopapi.dart';
 import 'package:petaraa_vender/constant/variableconstat.dart';
+import 'package:petaraa_vender/model/shopmodel.dart';
 import 'package:petaraa_vender/model/usermodel.dart';
 import 'package:petaraa_vender/widget/miscellaneous/toastui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +22,7 @@ class Auth {
         url,
         data: requestBody,
       );
+      log(requestBody.toString());
       Map data = response.data;
       if (response.statusCode == 200) {
         ref.watch(optProvider.notifier).state.text = data['otpCode'].toString();
@@ -80,6 +81,7 @@ class Auth {
       SharedPreferences pref = await SharedPreferences.getInstance();
       if (response.statusCode == 200) {
         pref.setString('token', data['token']);
+
         toast(msg: data['message'], context: context);
         return true;
       } else {
@@ -103,13 +105,13 @@ class Auth {
       final response = await dio.get(url);
       if (response.statusCode == 200) {
         ref.watch(userdetailsProvider.notifier).state =
-            UserDetails.fromJson(response.data);
-        log('shop:${response.data['showShopDetails'].toString()}');
-        // if (response.data['showShopDetails']) {
-        //   Shop().getshopdetails(ref: ref);
-        // } else {
-        //   toast(msg: 'Add Shop Details', context: context);
-        // }
+            UserDetails.fromJson(response.data['data']);
+        if (response.data["data"]['showShopDetails']) {
+          ref.watch(shopdetailsProvider.notifier).state =
+              ShopDetails.fromJson(response.data['data']['shopData']);
+        } else {
+          toast(msg: 'Add Shop Details', context: context);
+        }
       } else {
         log(response.statusCode.toString());
       }

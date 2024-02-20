@@ -21,7 +21,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   loginbtnfunction() {
     if (_phoneNo.text.isNotEmpty) {
       Map<String, String> requestBody = {
-        'phoneNo': _phoneNo.text,
+        'phoneNo': "+91${_phoneNo.text}",
       };
       Auth()
           .login(requestBody: requestBody, ref: ref, context: context)
@@ -31,7 +31,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   duration: const Duration(milliseconds: 500),
                   type: PageTransitionType.rightToLeft,
                   child: OtpPopUp(
-                    phoneno: _phoneNo.text,
+                    phoneno: "+91${_phoneNo.text}",
                   ))));
     } else {
       toast(msg: "Enter Phone Number", context: context);

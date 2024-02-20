@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:petaraa_vender/constant/color.dart';
 import 'package:petaraa_vender/constant/variableconstat.dart';
-import 'package:petaraa_vender/screen/manegement_sub_screens/editshopdetails.dart';
+import 'package:petaraa_vender/screen/manegement_sub_screens/addshopdetails.dart';
 import 'package:petaraa_vender/screen/manegement_sub_screens/updateshopdetail.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -136,8 +136,8 @@ class ProfileScreen extends ConsumerWidget {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  foregroundImage: NetworkImage(
-                      '$photobaseurl/${userdata.data!.profileImage}'),
+                  foregroundImage:
+                      NetworkImage('$photobaseurl/${userdata.profileImage}'),
                 ),
                 const SizedBox(
                   height: 40,
@@ -154,15 +154,14 @@ class ProfileScreen extends ConsumerWidget {
                         PageTransition(
                             duration: const Duration(milliseconds: 500),
                             type: PageTransitionType.rightToLeft,
-                            child: userdata.data!.showShopDetails.toString() ==
-                                    'true'
+                            child: userdata.showShopDetails!
                                 ? const UpdateShopDetail()
                                 : const EditShopDetails())),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          userdata.data!.showShopDetails.toString() == 'true'
+                          userdata.showShopDetails.toString() == 'true'
                               ? 'Edit shop Details'
                               : 'Add shop Details',
                           style: const TextStyle(
@@ -187,7 +186,7 @@ class ProfileScreen extends ConsumerWidget {
                         width: 10,
                       ),
                       Text(
-                        userdata.data!.venderName.toString(),
+                        userdata.venderName.toString(),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -213,7 +212,7 @@ class ProfileScreen extends ConsumerWidget {
                         width: 10,
                       ),
                       Text(
-                        userdata.data!.phoneNo.toString(),
+                        userdata.phoneNo.toString(),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -239,7 +238,7 @@ class ProfileScreen extends ConsumerWidget {
                         width: 10,
                       ),
                       Text(
-                        userdata.data!.emailId.toString(),
+                        userdata.emailId.toString(),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -265,7 +264,7 @@ class ProfileScreen extends ConsumerWidget {
                         width: 10,
                       ),
                       Text(
-                        userdata.data!.dob.toString(),
+                        userdata.dob.toString(),
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

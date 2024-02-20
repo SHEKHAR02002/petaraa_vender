@@ -31,7 +31,7 @@ class _NavigationBarScreenState extends ConsumerState<NavigationBarScreen> {
   Widget build(BuildContext context) {
     final currentPageIndex = ref.watch(currentPageProvider);
     final userdata = ref.watch(userdetailsProvider);
-    if (userdata.data!.showShopDetails.toString() == "false") {
+    if (!userdata.showShopDetails!) {
       toast(msg: 'Add Shop Details', context: context);
     }
     return Scaffold(

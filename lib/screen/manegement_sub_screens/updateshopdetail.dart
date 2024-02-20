@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:petaraa_vender/api/shopapi.dart';
 import 'package:petaraa_vender/constant/color.dart';
 import 'package:petaraa_vender/constant/variableconstat.dart';
 import 'package:petaraa_vender/widget/miscellaneous/addphotowidget.dart';
 import 'package:petaraa_vender/widget/miscellaneous/decoration.dart';
+import 'package:petaraa_vender/widget/miscellaneous/toastui.dart';
+import 'package:petaraa_vender/widget/popups/imageupdate_popup.dart';
 
 class UpdateShopDetail extends ConsumerStatefulWidget {
   const UpdateShopDetail({super.key});
@@ -19,14 +22,71 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
       _shoptaboutus = TextEditingController(),
       _shopwebsite = TextEditingController();
 
+  submitbtnfuncation() {
+    final shopdetails = ref.watch(shopdetailsProvider);
+    if (_shopName.text.isNotEmpty &&
+        _shopaddress.text.isNotEmpty &&
+        _shopcontact.text.isNotEmpty &&
+        _shoptaboutus.text.isNotEmpty) {
+      Map<String, dynamic> requestBody = {
+        'shopName': _shopName.text,
+        'shopAddress': _shopaddress.text,
+        'contactDetails': _shopcontact.text,
+        'aboutUs': _shoptaboutus.text,
+        'websiteLink': _shopwebsite.text,
+      };
+
+      if (shopdetails!.internalShopImages!.isEmpty) {
+        for (int i = 0;
+            i < ref.watch(internalImageProvider.notifier).state.length;
+            i++) {
+          requestBody['internalShopImage${i + 1}'] =
+              ref.watch(internalImageProvider.notifier).state[i].toString();
+        }
+      }
+      if (shopdetails.externalShopImages!.isEmpty) {
+        for (int i = 0;
+            i < ref.watch(externalImageProvider.notifier).state.length;
+            i++) {
+          requestBody['externalShopImage${i + 1}'] =
+              ref.watch(externalImageProvider.notifier).state[i].toString();
+        }
+      }
+      if (shopdetails.externalShopImages!.isEmpty) {
+        for (int i = 0;
+            i < ref.watch(moreImageProvider.notifier).state.length;
+            i++) {
+          requestBody['extraImages${i + 1}'] =
+              ref.watch(moreImageProvider.notifier).state[i].toString();
+        }
+      }
+
+      Shop()
+          .updateShop(requestBody: requestBody, context: context)
+          .whenComplete(() {
+        Navigator.pop(context);
+        ref.watch(internalImageProvider.notifier).state = [];
+        ref.watch(externalImageProvider.notifier).state = [];
+        ref.watch(moreImageProvider.notifier).state = [];
+        _shopName.clear();
+        _shopaddress.clear();
+        _shopcontact.clear();
+        _shoptaboutus.clear();
+        _shopwebsite.clear();
+      });
+    } else {
+      toast(msg: 'All Fields Requried', context: context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final shopdetails = ref.watch(shopdetailsProvider);
-    _shopName.text = shopdetails!.data!.shopName.toString();
-    _shopaddress.text = shopdetails.data!.shopAddress.toString();
-    _shopcontact.text = shopdetails.data!.contactDetails.toString();
-    _shoptaboutus.text = shopdetails.data!.aboutUs.toString();
-    _shopwebsite.text = shopdetails.data!.websiteLink.toString();
+    _shopName.text = shopdetails!.shopName.toString();
+    _shopaddress.text = shopdetails.shopAddress.toString();
+    _shopcontact.text = shopdetails.contactDetails.toString();
+    _shoptaboutus.text = shopdetails.aboutUs.toString();
+    _shopwebsite.text = shopdetails.websiteLink.toString();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -54,6 +114,7 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
               Text("Shop name", style: text18_400),
               TextField(
                 controller: _shopName,
+                onSubmitted: (value) => _shopName.text = value,
                 textCapitalization: TextCapitalization.words,
                 style: text16_400,
                 decoration: InputDecoration(
@@ -198,10 +259,31 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
               const SizedBox(
                 height: 10,
               ),
-              addPhotoWidget(
-                  ref: ref,
-                  fun: () => setState(() {}),
-                  typeofimage: 'internal'),
+              shopdetails.internalShopImages!.isEmpty
+                  ? addPhotoWidget(
+                      ref: ref,
+                      fun: () => setState(() {}),
+                      typeofimage: 'internal')
+                  : SizedBox(
+                      height: 84,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: shopdetails.internalShopImages!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(
+                                      '$photobaseurl/${shopdetails.internalShopImages![index].path.toString()}',
+                                    )),
+                              ),
+                            );
+                          }),
+                    ),
               const Text(
                 "External Shop",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
@@ -216,10 +298,30 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
                       color: Colors.grey),
                 ),
               ),
-              addPhotoWidget(
-                  ref: ref,
-                  fun: () => setState(() {}),
-                  typeofimage: 'external'),
+              shopdetails.externalShopImages!.isEmpty
+                  ? addPhotoWidget(
+                      ref: ref,
+                      fun: () => setState(() {}),
+                      typeofimage: 'external')
+                  : SizedBox(
+                      height: 84,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: shopdetails.externalShopImages!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(
+                                        "$photobaseurl/${shopdetails.externalShopImages![index].path.toString()}")),
+                              ),
+                            );
+                          }),
+                    ),
               const SizedBox(
                 height: 10,
               ),
@@ -237,8 +339,34 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
                       color: Colors.grey),
                 ),
               ),
-              addPhotoWidget(
-                  ref: ref, fun: () => setState(() {}), typeofimage: 'more')
+              shopdetails.extraImages!.isEmpty
+                  ? addPhotoWidget(
+                      ref: ref, fun: () => setState(() {}), typeofimage: 'more')
+                  : SizedBox(
+                      height: 84,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: shopdetails.extraImages!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 80,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(
+                                        "$photobaseurl/${shopdetails.extraImages![index].path.toString()}")),
+                              ),
+                            );
+                          }),
+                    ),
+              ElevatedButton(
+                  onPressed: () => showDialog(
+                        builder: (context) => imageupdate(ref: ref),
+                        context: context,
+                      ),
+                  child: const Text("Update"))
             ],
           ),
         ),
@@ -246,7 +374,7 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
         child: ElevatedButton(
-            onPressed: () {},
+            onPressed: submitbtnfuncation,
             style: ElevatedButton.styleFrom(
                 elevation: 0,
                 shape: RoundedRectangleBorder(

@@ -1,18 +1,4 @@
 class ShopDetails {
-  bool? success;
-  String? message;
-  ShopData? data;
-
-  ShopDetails({this.success, this.message, this.data});
-
-  ShopDetails.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    message = json['message'];
-    data = json['data'] != null ? ShopData.fromJson(json['data']) : null;
-  }
-}
-
-class ShopData {
   String? sId;
   String? venderId;
   String? aboutUs;
@@ -21,11 +7,11 @@ class ShopData {
   String? shopName;
   int? status;
   String? websiteLink;
+  List<InternalShopImages>? internalShopImages;
   List<ExternalShopImages>? externalShopImages;
   List<ExtraImages>? extraImages;
-  List<InternalShopImages>? internalShopImages;
 
-  ShopData(
+  ShopDetails(
       {this.sId,
       this.venderId,
       this.aboutUs,
@@ -38,7 +24,7 @@ class ShopData {
       this.extraImages,
       this.internalShopImages});
 
-  ShopData.fromJson(Map<String, dynamic> json) {
+  ShopDetails.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     venderId = json['venderId'];
     aboutUs = json['aboutUs'];
@@ -68,6 +54,18 @@ class ShopData {
   }
 }
 
+class InternalShopImages {
+  int? id;
+  String? path;
+
+  InternalShopImages({this.id, this.path});
+
+  InternalShopImages.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    path = json['path'];
+  }
+}
+
 class ExternalShopImages {
   int? id;
   String? path;
@@ -87,18 +85,6 @@ class ExtraImages {
   ExtraImages({this.id, this.path});
 
   ExtraImages.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    path = json['path'];
-  }
-}
-
-class InternalShopImages {
-  int? id;
-  String? path;
-
-  InternalShopImages({this.id, this.path});
-
-  InternalShopImages.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     path = json['path'];
   }

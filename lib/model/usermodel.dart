@@ -1,18 +1,4 @@
 class UserDetails {
-  bool? success;
-  String? message;
-  Userdata? data;
-
-  UserDetails({this.success, this.message, this.data});
-
-  UserDetails.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    message = json['message'];
-    data = json['data'] != null ? Userdata.fromJson(json['data']) : null;
-  }
-}
-
-class Userdata {
   String? sId;
   String? phoneNo;
   int? status;
@@ -23,7 +9,7 @@ class Userdata {
   String? venderName;
   String? profileImage;
 
-  Userdata(
+  UserDetails(
       {this.sId,
       this.phoneNo,
       this.status,
@@ -34,7 +20,7 @@ class Userdata {
       this.venderName,
       this.profileImage});
 
-  Userdata.fromJson(Map<String, dynamic> json) {
+  UserDetails.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     phoneNo = json['phoneNo'];
     status = json['status'];

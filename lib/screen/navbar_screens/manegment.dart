@@ -7,7 +7,7 @@ import 'package:petaraa_vender/screen/manegement_sub_screens/coupon.dart';
 import 'package:petaraa_vender/screen/manegement_sub_screens/paymentgatewayscreen.dart';
 import 'package:petaraa_vender/screen/manegement_sub_screens/storetimingscreen.dart';
 import 'package:petaraa_vender/widget/cards/actioncard_manegement.dart';
-import 'package:petaraa_vender/screen/manegement_sub_screens/editshopdetails.dart';
+import 'package:petaraa_vender/screen/manegement_sub_screens/addshopdetails.dart';
 
 class ManegmentScreen extends ConsumerStatefulWidget {
   const ManegmentScreen({super.key});
