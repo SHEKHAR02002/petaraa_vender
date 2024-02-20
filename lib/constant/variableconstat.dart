@@ -15,5 +15,5 @@ StateProvider tokenProvider = StateProvider((ref) => '');
 
 StateProvider<UserDetails> userdetailsProvider =
     StateProvider((ref) => UserDetails());
-StateProvider<ShopDetails> shopdetailsProvider =
+StateProvider<ShopDetails?> shopdetailsProvider =
     StateProvider((ref) => ShopDetails());

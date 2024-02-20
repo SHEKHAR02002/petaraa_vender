@@ -21,12 +21,12 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final userdetails = ref.watch(userdetailsProvider);
-    _shopName.text = userdetails.data!.shopData!.shopName.toString();
-    _shopaddress.text = userdetails.data!.shopData!.shopAddress.toString();
-    _shopcontact.text = userdetails.data!.shopData!.contactDetails.toString();
-    _shoptaboutus.text = userdetails.data!.shopData!.aboutUs.toString();
-    _shopwebsite.text = userdetails.data!.shopData!.websiteLink.toString();
+    final shopdetails = ref.watch(shopdetailsProvider);
+    _shopName.text = shopdetails!.data!.shopName.toString();
+    _shopaddress.text = shopdetails.data!.shopAddress.toString();
+    _shopcontact.text = shopdetails.data!.contactDetails.toString();
+    _shoptaboutus.text = shopdetails.data!.aboutUs.toString();
+    _shopwebsite.text = shopdetails.data!.websiteLink.toString();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

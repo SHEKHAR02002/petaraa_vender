@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:petaraa_vender/api/shopapi.dart';
 import 'package:petaraa_vender/constant/variableconstat.dart';
 import 'package:petaraa_vender/model/usermodel.dart';
 import 'package:petaraa_vender/widget/miscellaneous/toastui.dart';
@@ -93,7 +94,7 @@ class Auth {
   }
 
   //get user API
-  Future getuserdetails({required WidgetRef ref}) async {
+  Future getuserdetails({required WidgetRef ref, required context}) async {
     try {
       String url = '$baseurl/v1/vender/venderUser';
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -101,9 +102,14 @@ class Auth {
       dio.options.headers['x-access-token'] = pref.getString('token');
       final response = await dio.get(url);
       if (response.statusCode == 200) {
-        log(response.data.toString());
         ref.watch(userdetailsProvider.notifier).state =
             UserDetails.fromJson(response.data);
+        log('shop:${response.data['showShopDetails'].toString()}');
+        // if (response.data['showShopDetails']) {
+        //   Shop().getshopdetails(ref: ref);
+        // } else {
+        //   toast(msg: 'Add Shop Details', context: context);
+        // }
       } else {
         log(response.statusCode.toString());
       }

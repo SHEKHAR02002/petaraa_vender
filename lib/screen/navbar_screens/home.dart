@@ -88,9 +88,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          userdetails.data!.showShopDetails.toString() == "true"
-                              ? userdetails.data!.shopData!.shopName.toString()
-                              : "Petaraa",
+                          "Petaraa",
                           style: TextStyle(
                               fontSize: 18,
                               color: primaryColor,

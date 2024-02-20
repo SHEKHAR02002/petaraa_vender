@@ -28,7 +28,7 @@ class Shop {
     }
   }
 
-  Future getshopdetails({required WidgetRef ref}) async {
+  Future<ShopDetails> getshopdetails({required WidgetRef ref}) async {
     try {
       String url = '$baseurl/v1/vender/getShopDetails';
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -46,5 +46,6 @@ class Shop {
     } catch (e) {
       log(e.toString());
     }
+    return ShopDetails();
   }
 }

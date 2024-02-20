@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -30,7 +29,7 @@ class _OtpPopUpState extends ConsumerState<OtpPopUp> {
         .then((value) {
       if (value) {
         if (ref.watch(useretypeProvider)) {
-          Auth().getuserdetails(ref: ref).whenComplete(() {
+          Auth().getuserdetails(ref: ref, context: context).whenComplete(() {
             Navigator.pushAndRemoveUntil(
                 context,
                 PageTransition(
