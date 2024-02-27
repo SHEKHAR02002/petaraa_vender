@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:petaraa_vender/api/shopapi.dart';
@@ -28,36 +29,48 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
         _shopaddress.text.isNotEmpty &&
         _shopcontact.text.isNotEmpty &&
         _shoptaboutus.text.isNotEmpty) {
-      Map<String, dynamic> requestBody = {
+      FormData requestBody = FormData.fromMap({
         'shopName': _shopName.text,
         'shopAddress': _shopaddress.text,
         'contactDetails': _shopcontact.text,
         'aboutUs': _shoptaboutus.text,
         'websiteLink': _shopwebsite.text,
-      };
+      });
 
       if (shopdetails!.internalShopImages!.isEmpty) {
         for (int i = 0;
             i < ref.watch(internalImageProvider.notifier).state.length;
             i++) {
-          requestBody['internalShopImage${i + 1}'] =
-              ref.watch(internalImageProvider.notifier).state[i].toString();
+          requestBody.files.add(MapEntry(
+            'internalShopImage${i + 1}',
+            MultipartFile.fromFileSync(
+              ref.watch(internalImageProvider.notifier).state[i].toString(),
+            ),
+          ));
         }
       }
       if (shopdetails.externalShopImages!.isEmpty) {
         for (int i = 0;
             i < ref.watch(externalImageProvider.notifier).state.length;
             i++) {
-          requestBody['externalShopImage${i + 1}'] =
-              ref.watch(externalImageProvider.notifier).state[i].toString();
+          requestBody.files.add(MapEntry(
+            'externalShopImage${i + 1}',
+            MultipartFile.fromFileSync(
+              ref.watch(externalImageProvider.notifier).state[i].toString(),
+            ),
+          ));
         }
       }
       if (shopdetails.externalShopImages!.isEmpty) {
         for (int i = 0;
             i < ref.watch(moreImageProvider.notifier).state.length;
             i++) {
-          requestBody['extraImages${i + 1}'] =
-              ref.watch(moreImageProvider.notifier).state[i].toString();
+          requestBody.files.add(MapEntry(
+            'extraImages${i + 1}',
+            MultipartFile.fromFileSync(
+              ref.watch(moreImageProvider.notifier).state[i].toString(),
+            ),
+          ));
         }
       }
 
@@ -266,24 +279,38 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
                       typeofimage: 'internal')
                   : SizedBox(
                       height: 84,
-                      child: ListView.builder(
+                      child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           itemCount: shopdetails.internalShopImages!.length,
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(width: 10);
+                          },
                           itemBuilder: (context, index) {
-                            return Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(
-                                      '$photobaseurl/${shopdetails.internalShopImages![index].path.toString()}',
-                                    )),
+                            return GestureDetector(
+                              onTap: () => showDialog(
+                                builder: (context) => imageupdate(
+                                    ref: ref,
+                                    image:
+                                        "$photobaseurl/${shopdetails.internalShopImages![index].path.toString()}"),
+                                context: context,
+                              ),
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                        '$photobaseurl/${shopdetails.internalShopImages![index].path.toString()}',
+                                      )),
+                                ),
                               ),
                             );
                           }),
                     ),
+              const SizedBox(height: 10),
               const Text(
                 "External Shop",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
@@ -305,19 +332,32 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
                       typeofimage: 'external')
                   : SizedBox(
                       height: 84,
-                      child: ListView.builder(
+                      child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           itemCount: shopdetails.externalShopImages!.length,
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(width: 10);
+                          },
                           itemBuilder: (context, index) {
-                            return Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(
-                                        "$photobaseurl/${shopdetails.externalShopImages![index].path.toString()}")),
+                            return GestureDetector(
+                              onTap: () => showDialog(
+                                builder: (context) => imageupdate(
+                                    ref: ref,
+                                    image:
+                                        "$photobaseurl/${shopdetails.externalShopImages![index].path.toString()}"),
+                                context: context,
+                              ),
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                          "$photobaseurl/${shopdetails.externalShopImages![index].path.toString()}")),
+                                ),
                               ),
                             );
                           }),
@@ -343,30 +383,37 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
                   ? addPhotoWidget(
                       ref: ref, fun: () => setState(() {}), typeofimage: 'more')
                   : SizedBox(
-                      height: 84,
-                      child: ListView.builder(
+                      height: 80,
+                      child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           itemCount: shopdetails.extraImages!.length,
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(width: 10);
+                          },
                           itemBuilder: (context, index) {
-                            return Container(
-                              height: 80,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(
-                                        "$photobaseurl/${shopdetails.extraImages![index].path.toString()}")),
+                            return GestureDetector(
+                              onTap: () => showDialog(
+                                builder: (context) => imageupdate(
+                                    ref: ref,
+                                    image:
+                                        "$photobaseurl/${shopdetails.extraImages![index].path.toString()}"),
+                                context: context,
+                              ),
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                          "$photobaseurl/${shopdetails.extraImages![index].path.toString()}")),
+                                ),
                               ),
                             );
                           }),
                     ),
-              ElevatedButton(
-                  onPressed: () => showDialog(
-                        builder: (context) => imageupdate(ref: ref),
-                        context: context,
-                      ),
-                  child: const Text("Update"))
             ],
           ),
         ),

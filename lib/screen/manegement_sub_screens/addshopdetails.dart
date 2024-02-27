@@ -1,5 +1,9 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:petaraa_vender/api/authapi.dart';
 import 'package:petaraa_vender/api/shopapi.dart';
 import 'package:petaraa_vender/constant/color.dart';
 import 'package:petaraa_vender/widget/miscellaneous/addphotowidget.dart';
@@ -35,35 +39,49 @@ class _EditShopDetailsState extends ConsumerState<EditShopDetails> {
           _shopaddress.text.isNotEmpty &&
           _shopcontact.text.isNotEmpty &&
           _shoptaboutus.text.isNotEmpty) {
-        Map<String, dynamic> requestBody = {
+        FormData requestBody = FormData.fromMap({
           'shopName': _shopName.text,
           'shopAddress': _shopaddress.text,
           'contactDetails': _shopcontact.text,
           'aboutUs': _shoptaboutus.text,
           'websiteLink': _shopwebsite.text,
-        };
+        });
 
         for (int i = 0;
             i < ref.watch(internalImageProvider.notifier).state.length;
             i++) {
-          requestBody['internalShopImage${i + 1}'] =
-              ref.watch(internalImageProvider.notifier).state[i].toString();
+          requestBody.files.add(MapEntry(
+            'internalShopImages${i + 1}',
+            MultipartFile.fromFileSync(
+              ref.watch(internalImageProvider.notifier).state[i].toString(),
+            ),
+          ));
         }
         for (int i = 0;
             i < ref.watch(externalImageProvider.notifier).state.length;
             i++) {
-          requestBody['externalShopImage${i + 1}'] =
-              ref.watch(externalImageProvider.notifier).state[i].toString();
+          requestBody.files.add(MapEntry(
+            'externalShopImages${i + 1}',
+            MultipartFile.fromFileSync(
+              ref.watch(externalImageProvider.notifier).state[i].toString(),
+            ),
+          ));
         }
         for (int i = 0;
             i < ref.watch(moreImageProvider.notifier).state.length;
             i++) {
-          requestBody['extraImages${i + 1}'] =
-              ref.watch(moreImageProvider.notifier).state[i].toString();
+          requestBody.files.add(MapEntry(
+            'extraImages${i + 1}',
+            MultipartFile.fromFileSync(
+              ref.watch(moreImageProvider.notifier).state[i].toString(),
+            ),
+          ));
         }
+        log(requestBody.toString());
         Shop()
             .addshopdetails(requestBody: requestBody, context: context)
             .whenComplete(() {
+          Auth().getuserdetails(ref: ref, context: context);
           Navigator.pop(context);
           ref.watch(internalImageProvider.notifier).state = [];
           ref.watch(externalImageProvider.notifier).state = [];

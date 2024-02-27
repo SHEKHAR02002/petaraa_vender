@@ -4,7 +4,7 @@ import 'package:petaraa_vender/model/shopmodel.dart';
 import 'package:petaraa_vender/model/usermodel.dart';
 
 String baseurl = 'http://172.105.33.114:2023/api';
-String photobaseurl = 'http://172.105.33.114:2023/profiles';
+String photobaseurl = 'http://172.105.33.114:2023/';
 
 //temp
 StateProvider<TextEditingController> optProvider =

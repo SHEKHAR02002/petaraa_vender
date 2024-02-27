@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:petaraa_vender/constant/color.dart';
-import 'package:petaraa_vender/constant/variableconstat.dart';
 
-Widget imageupdate({required WidgetRef ref}) {
-  final userdata = ref.watch(userdetailsProvider);
+
+Widget imageupdate({required WidgetRef ref, required String image}) {
   return Dialog(
       backgroundColor: white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -20,8 +19,7 @@ Widget imageupdate({required WidgetRef ref}) {
                 color: white,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Image.network("$photobaseurl/${userdata.profileImage}",
-                  fit: BoxFit.cover),
+              child: Image.network(image, fit: BoxFit.cover),
             ),
             const SizedBox(height: 10),
             Row(

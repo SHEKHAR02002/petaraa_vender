@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Shop {
   final dio = Dio();
   Future addshopdetails(
-      {required Map<String, dynamic> requestBody, required context}) async {
+      {required FormData requestBody, required context}) async {
     try {
       String url = '$baseurl/v1/vender/createShop';
       //post data
@@ -20,6 +20,7 @@ class Shop {
         url,
         data: requestBody,
       );
+
       if (response.statusCode == 200) {
         toast(msg: response.data['message'].toString(), context: context);
       }
@@ -50,8 +51,7 @@ class Shop {
   }
 
   // update shop
-  Future updateShop(
-      {required Map<String, dynamic> requestBody, required context}) async {
+  Future updateShop({required FormData requestBody, required context}) async {
     try {
       String url = '$baseurl/v1/vender/updateShopDetails';
       SharedPreferences pref = await SharedPreferences.getInstance();

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,6 +39,7 @@ class _AddNewUserState extends ConsumerState<AddNewUser> {
     try {
       final XFile? image = await ImagePicker().pickImage(source: source);
       String cropFile = await userImage(pickedFile: image);
+      log(cropFile);
       ref.watch(customProfileImageProvider.notifier).state = cropFile;
     } catch (e) {
       if (kDebugMode) {
@@ -89,8 +91,8 @@ class _AddNewUserState extends ConsumerState<AddNewUser> {
         'dob': ref.watch(dateofbirthProvider),
         'phoneNo': widget.phoneno,
         'profileImage': await MultipartFile.fromFile(
-            ref.watch(customProfileImageProvider).toString(),
-            filename: 'profilepic')
+          ref.watch(customProfileImageProvider).toString(),
+        )
       });
       if (!mounted) return;
       Auth()

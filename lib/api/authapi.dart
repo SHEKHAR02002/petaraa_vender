@@ -71,11 +71,12 @@ class Auth {
 
   //create user API
   Future<bool> createprofile(
-      {required FormData requestdata,
+      {required  requestdata,
       required WidgetRef ref,
       required context}) async {
     try {
       String url = '$baseurl/v1/vender/venderCreateUpdateUser';
+      log(requestdata.toString());
       final response = await dio.post(url, data: requestdata);
       Map data = response.data;
       SharedPreferences pref = await SharedPreferences.getInstance();

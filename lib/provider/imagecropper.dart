@@ -44,7 +44,7 @@ Future userImage({
   if (pickedFile != null) {
     final croppedFile = await ImageCropper().cropImage(
       aspectRatioPresets: [CropAspectRatioPreset.original],
-      cropStyle: CropStyle.rectangle,
+      cropStyle: CropStyle.circle,
       sourcePath: pickedFile.path,
       compressFormat: ImageCompressFormat.jpg,
       compressQuality: 100,
