@@ -104,6 +104,7 @@ class Auth {
       log(pref.getString('token').toString());
       dio.options.headers['x-access-token'] = pref.getString('token');
       final response = await dio.get(url);
+      log(response.data.toString());
       if (response.statusCode == 200) {
         ref.watch(userdetailsProvider.notifier).state =
             UserDetails.fromJson(response.data['data']);

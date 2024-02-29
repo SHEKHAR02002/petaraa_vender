@@ -288,13 +288,18 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
                           },
                           itemBuilder: (context, index) {
                             return GestureDetector(
-                              onTap: () => showDialog(
-                                builder: (context) => imageupdate(
-                                    ref: ref,
-                                    image:
-                                        "$photobaseurl/${shopdetails.internalShopImages![index].path.toString()}"),
-                                context: context,
-                              ),
+                              onTap: () {
+                                showDialog(
+                                  builder: (context) => ImageUpdatPopup(
+                                      fun: () => setState(() {}),
+                                      index: index + 1,
+                                      imagetype: '1',
+                                      ref: ref,
+                                      image:
+                                          "$photobaseurl/${shopdetails.internalShopImages![index].path.toString()}"),
+                                  context: context,
+                                );
+                              },
                               child: Container(
                                 height: 80,
                                 width: 80,
@@ -342,7 +347,10 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () => showDialog(
-                                builder: (context) => imageupdate(
+                                builder: (context) => ImageUpdatPopup(
+                                    fun: () => setState(() {}),
+                                    index: index + 1,
+                                    imagetype: '2',
                                     ref: ref,
                                     image:
                                         "$photobaseurl/${shopdetails.externalShopImages![index].path.toString()}"),
@@ -394,7 +402,10 @@ class _UpdateShopDetailState extends ConsumerState<UpdateShopDetail> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () => showDialog(
-                                builder: (context) => imageupdate(
+                                builder: (context) => ImageUpdatPopup(
+                                    fun: () => setState(() {}),
+                                    index: index + 1,
+                                    imagetype: '3',
                                     ref: ref,
                                     image:
                                         "$photobaseurl/${shopdetails.extraImages![index].path.toString()}"),

@@ -55,37 +55,31 @@ class ShopDetails {
 }
 
 class InternalShopImages {
-  int? id;
   String? path;
 
-  InternalShopImages({this.id, this.path});
+  InternalShopImages({this.path});
 
   InternalShopImages.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     path = json['path'];
   }
 }
 
 class ExternalShopImages {
-  int? id;
   String? path;
 
-  ExternalShopImages({this.id, this.path});
+  ExternalShopImages({this.path});
 
   ExternalShopImages.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     path = json['path'];
   }
 }
 
 class ExtraImages {
-  int? id;
   String? path;
 
-  ExtraImages({this.id, this.path});
+  ExtraImages({this.path});
 
   ExtraImages.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     path = json['path'];
   }
 }

@@ -71,4 +71,31 @@ class Shop {
       log(e.toString());
     }
   }
+
+  Future updateshopimage(
+      {required FormData requestBody,
+      required context,
+      required WidgetRef ref}) async {
+    try {
+      String url = '$baseurl/v1/vender/updateShopImages';
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      dio.options.headers['x-access-token'] = pref.getString('token');
+      Response response = await dio.put(
+        url,
+        data: requestBody,
+      );
+      log(requestBody.toString());
+      if (response.statusCode == 200) {
+        log(response.data['data'].toString());
+        ref.watch(shopdetailsProvider.notifier).state =
+            ShopDetails.fromJson(response.data['data']);
+        toast(msg: response.data['message'].toString(), context: context);
+      } else {
+        toast(msg: 'Something Went Wrong'.toString(), context: context);
+        log(response.statusCode.toString());
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }
